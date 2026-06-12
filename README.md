@@ -485,8 +485,10 @@ public class MathActivity extends AppCompatActivity {
         Button btnBackMath = findViewById(R.id.btnBackMath);
         tvResult = findViewById(R.id.tvResult);
 
+        // Nút quay lại màn hình chính
         btnBackMath.setOnClickListener(v -> finish());
 
+        // Nút giải phương trình và đẩy API
         btnSolve.setOnClickListener(v -> {
             try {
                 double a = Double.parseDouble(edtA.getText().toString());
@@ -519,18 +521,19 @@ public class MathActivity extends AppCompatActivity {
                         ketLuan = "2 nghiem phan biet";
                         double x1 = (-b + Math.sqrt(delta)) / (2 * a);
                         double x2 = (-b - Math.sqrt(delta)) / (2 * a);
-                        nghiem = x1; 
+                        nghiem = x1;
                         detailRoots = "x1 = " + x1 + "\nx2 = " + x2;
                     }
                 }
 
-                // In ra man hinh an toan, khong dung emoji hay ky tu xuong dong bi loi
+                // In kết quả toán học ra màn hình (Không dùng ký tự đặc biệt)
                 tvResult.setText("Ket luan: " + ketLuan + "\nChi tiet: \n" + detailRoots);
-                
+
+                // Kích hoạt luồng đẩy dữ liệu lên Server
                 postToApi(a, b, c, ketLuan, nghiem);
 
             } catch (Exception e) {
-                tvResult.setText("Loi: Vui long nhap day du he so!");
+                tvResult.setText("Loi: Vui long nhap day du he so hop le!");
             }
         });
     }
@@ -541,14 +544,20 @@ public class MathActivity extends AppCompatActivity {
                 URL url = new URL("https://k58kmt.tdh.io.vn/api");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
+
+                // Cấu hình Header
                 conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                conn.setRequestProperty("Accept", "application/json");
                 conn.setDoOutput(true);
 
+                // Build chuỗi JSON chuẩn
                 JSONObject root = new JSONObject();
                 root.put("app_by", STUDENT_CODE);
 
                 JSONObject input = new JSONObject();
-                input.put("a", a); input.put("b", b); input.put("c", c);
+                input.put("a", a);
+                input.put("b", b);
+                input.put("c", c);
                 input.put("name", "hello tac ke");
                 root.put("input", input);
 
@@ -558,22 +567,48 @@ public class MathActivity extends AppCompatActivity {
                 output.put("nghiem", nghiem);
                 root.put("output", output);
 
+                // Gửi dữ liệu đi
                 OutputStream os = conn.getOutputStream();
-                os.write(root.toString().getBytes(StandardCharsets.UTF_8));
+                byte[] inputBytes = root.toString().getBytes(StandardCharsets.UTF_8);
+                os.write(inputBytes, 0, inputBytes.length);
+                os.flush();
                 os.close();
 
-                if (conn.getResponseCode() == 200) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = br.readLine()) != null) response.append(line);
-                    br.close();
-                    Log.d("API_SUCCESS", response.toString());
-                    runOnUiThread(() -> Toast.makeText(this, "API Success!", Toast.LENGTH_SHORT).show());
+                // Lấy mã Code trả về từ Server
+                int responseCode = conn.getResponseCode();
+
+                // Đọc nội dung phản hồi của Server
+                BufferedReader br;
+                if (100 <= responseCode && responseCode <= 399) {
+                    br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                } else {
+                    br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
                 }
+
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) response.append(line);
+                br.close();
+
+                // In kết quả API lên màn hình hiển thị
+                runOnUiThread(() -> {
+                    String currentText = tvResult.getText().toString();
+                    if (responseCode == 200 || responseCode == 201) {
+                        tvResult.setText(currentText + "\n\n[API THANH CONG - Code " + responseCode + "]\nServer phan hoi: " + response.toString());
+                    } else {
+                        tvResult.setText(currentText + "\n\n[API BAO LOI - Code " + responseCode + "]\nChi tiet: " + response.toString());
+                    }
+                });
+
                 conn.disconnect();
+
             } catch (Exception e) {
-                Log.e("API_ERROR", "Network error: ", e);
+                // In ra màn hình nếu sập mạng hoặc lỗi kết nối
+                runOnUiThread(() -> {
+                    String currentText = tvResult.getText().toString();
+                    tvResult.setText(currentText + "\n\n[LOI MANG / HE THONG]\nChi tiet: " + e.getMessage());
+                });
+                Log.e("API_ERROR", "Loi he thong: ", e);
             }
         });
     }
@@ -658,7 +693,7 @@ public class WebActivity extends AppCompatActivity {
     }
 }
 ```
-## 7. Test trên máy ảo
+## 7. Test trên điện thoại
 
 
 
