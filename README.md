@@ -1,6 +1,6 @@
 # MobileDev-BTVN-02
 # SINH VIÊN THỰC HIỆN: LƯƠNG HOÀNG VIỆT - K225480106073
-# MÔN HỌC: LẬP TRÌNH TRÊN THIẾT BỊ DI ĐỘNG
+# MÔN HỌC: PHÁT TRIỂN ỨNG DỤNG TRÊN THIẾT BỊ DI ĐỘNG
 # BÀI TẬP 02
 # BÀI LÀM
 # I. LÝ THUYẾT
