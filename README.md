@@ -521,14 +521,14 @@ public class MathActivity extends AppCompatActivity {
                         ketLuan = "2 nghiem phan biet";
                         double x1 = (-b + Math.sqrt(delta)) / (2 * a);
                         double x2 = (-b - Math.sqrt(delta)) / (2 * a);
-                        nghiem = x1;
+                        nghiem = x1; 
                         detailRoots = "x1 = " + x1 + "\nx2 = " + x2;
                     }
                 }
 
                 // In kết quả toán học ra màn hình (Không dùng ký tự đặc biệt)
                 tvResult.setText("Ket luan: " + ketLuan + "\nChi tiet: \n" + detailRoots);
-
+                
                 // Kích hoạt luồng đẩy dữ liệu lên Server
                 postToApi(a, b, c, ketLuan, nghiem);
 
@@ -541,24 +541,26 @@ public class MathActivity extends AppCompatActivity {
     private void postToApi(double a, double b, double c, String ketLuan, double nghiem) {
         Executors.newSingleThreadExecutor().execute(() -> {
             try {
-                URL url = new URL("https://k58kmt.tdh.io.vn/api");
+                // Đã thêm dấu "/" ở cuối để chống lỗi 301 Moved Permanently
+                URL url = new URL("https://k58kmt.tdh.io.vn/api/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
-
+                
                 // Cấu hình Header
                 conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-                conn.setRequestProperty("Accept", "application/json");
+                conn.setRequestProperty("Accept", "application/json"); 
                 conn.setDoOutput(true);
 
-                // Build chuỗi JSON chuẩn
+                // Build chuỗi JSON chuẩn với Tên và MSSV
                 JSONObject root = new JSONObject();
                 root.put("app_by", STUDENT_CODE);
 
                 JSONObject input = new JSONObject();
-                input.put("a", a);
-                input.put("b", b);
+                input.put("a", a); 
+                input.put("b", b); 
                 input.put("c", c);
-                input.put("name", "hello tac ke");
+                input.put("name", "Luong Hoang Viet");
+                input.put("mssv", "K225480106073");
                 root.put("input", input);
 
                 JSONObject output = new JSONObject();
@@ -571,12 +573,12 @@ public class MathActivity extends AppCompatActivity {
                 OutputStream os = conn.getOutputStream();
                 byte[] inputBytes = root.toString().getBytes(StandardCharsets.UTF_8);
                 os.write(inputBytes, 0, inputBytes.length);
-                os.flush();
+                os.flush(); 
                 os.close();
 
                 // Lấy mã Code trả về từ Server
                 int responseCode = conn.getResponseCode();
-
+                
                 // Đọc nội dung phản hồi của Server
                 BufferedReader br;
                 if (100 <= responseCode && responseCode <= 399) {
@@ -584,7 +586,7 @@ public class MathActivity extends AppCompatActivity {
                 } else {
                     br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
                 }
-
+                
                 StringBuilder response = new StringBuilder();
                 String line;
                 while ((line = br.readLine()) != null) response.append(line);
@@ -599,9 +601,9 @@ public class MathActivity extends AppCompatActivity {
                         tvResult.setText(currentText + "\n\n[API BAO LOI - Code " + responseCode + "]\nChi tiet: " + response.toString());
                     }
                 });
-
+                
                 conn.disconnect();
-
+                
             } catch (Exception e) {
                 // In ra màn hình nếu sập mạng hoặc lỗi kết nối
                 runOnUiThread(() -> {
@@ -694,6 +696,8 @@ public class WebActivity extends AppCompatActivity {
 }
 ```
 ## 7. Test trên điện thoại
+
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/b1f7d27f-fa5f-4651-a27e-12e30a4ae8f3" />
 
 
 
