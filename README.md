@@ -216,6 +216,35 @@ public class MainActivity extends AppCompatActivity {
 
 app/src/main/AndroidManifest.xml
 
+```
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.app2"> <!-- Đã đổi đúng tên Package -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Hệ Thống Tương Tác API"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+        
+        <!-- Màn hình 1 -->
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Màn hình 2 & 3 -->
+        <activity android:name=".MathActivity" />
+        <activity android:name=".WebActivity" />
+    </application>
+</manifest>
+```
+
 ## 2. Layout Màn hình 1 (About & Điều hướng)
 
 app/src/main/res/layout/activity_main.xml
