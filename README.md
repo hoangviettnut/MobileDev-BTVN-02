@@ -354,63 +354,88 @@ app/src/main/res/layout/activity_math.xml
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="📐 PHƯƠNG TRÌNH BẬC 2"
+        android:text="PHƯƠNG TRÌNH BẬC 2"
         android:textSize="22sp"
         android:textStyle="bold"
         android:gravity="center"
         android:textColor="#1A202C"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="32dp"/>
+        android:layout_marginBottom="24dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@android:color/white"
-        android:padding="20dp"
+        android:padding="16dp"
         android:elevation="4dp"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="16dp">
 
         <EditText
             android:id="@+id/edtA"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="50dp"
             android:hint="Nhập hệ số a"
             android:inputType="numberSigned|numberDecimal"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:id="@+id/edtB"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="50dp"
             android:hint="Nhập hệ số b"
             android:inputType="numberSigned|numberDecimal"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:id="@+id/edtC"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="50dp"
             android:hint="Nhập hệ số c"
             android:inputType="numberSigned|numberDecimal"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:padding="16dp"
+        android:elevation="4dp"
+        android:layout_marginBottom="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KẾT QUẢ HIỂN THỊ:"
+            android:textStyle="bold"
+            android:textColor="#2D3748"
+            android:textSize="14sp"
+            android:layout_marginBottom="6dp"/>
+        <TextView
+            android:id="@+id/tvResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chưa có dữ liệu tính toán."
+            android:textColor="#4A5568"
+            android:textSize="15sp"
+            android:lineSpacingMultiplier="1.2"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/btnSolve"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="🚀 GIẢI &amp; ĐẨY LÊN API"
+        android:layout_height="55dp"
+        android:text="GIẢI VÀ ĐẨY LÊN API"
         android:textSize="16sp"
         android:textStyle="bold"
         android:backgroundTint="#DD6B20"
         android:layout_marginBottom="12dp"/>
 
-    <!-- Nút Quay Lại -->
     <Button
         android:id="@+id/btnBackMath"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="⬅️ QUAY LẠI TRANG CHÍNH"
+        android:text="QUAY LẠI TRANG CHÍNH"
         android:textSize="14sp"
         android:textStyle="bold"
         android:textColor="#4A5568"
@@ -474,42 +499,38 @@ public class MathActivity extends AppCompatActivity {
 
                 if (a == 0) {
                     if (b == 0) {
-                        ketLuan = (c == 0) ? "Vô số nghiệm" : "Vô nghiệm";
-                        detailRoots = (c == 0) ? "Phương trình thỏa mãn với mọi x" : "Phương trình không có nghiệm";
+                        ketLuan = (c == 0) ? "Vo so nghiem" : "Vo nghiem";
+                        detailRoots = (c == 0) ? "Phuong trinh dung voi moi x" : "Phuong trinh vo nghiem";
                     } else {
-                        ketLuan = "1 nghiệm";
+                        ketLuan = "1 nghiem";
                         nghiem = -c / b;
-                        detailRoots = "Nghiệm bậc nhất x = " + nghiem;
+                        detailRoots = "x = " + nghiem;
                     }
                 } else {
                     double delta = (b * b) - (4 * a * c);
                     if (delta < 0) {
-                        ketLuan = "Vô nghiệm";
-                        detailRoots = "Vô nghiệm thực (Δ < 0)";
+                        ketLuan = "Vo nghiem";
+                        detailRoots = "Delta < 0, phuong trinh vo nghiem thuc";
                     } else if (delta == 0) {
-                        ketLuan = "Nghiệm kép";
+                        ketLuan = "Nghiem kep";
                         nghiem = -b / (2 * a);
                         detailRoots = "x1 = x2 = " + nghiem;
                     } else {
-                        ketLuan = "2 nghiệm PB";
+                        ketLuan = "2 nghiem phan biet";
                         double x1 = (-b + Math.sqrt(delta)) / (2 * a);
                         double x2 = (-b - Math.sqrt(delta)) / (2 * a);
                         nghiem = x1; 
-                        detailRoots = "x1 = " + x1 + "
-x2 = " + x2;
+                        detailRoots = "x1 = " + x1 + "\nx2 = " + x2;
                     }
                 }
 
-                // Xuất trực tiếp lên giao diện thay vì gọi Toast
-                tvResult.setText("📌 Kết luận: " + ketLuan + "
-📋 Chi tiết:
-" + detailRoots);
+                // In ra man hinh an toan, khong dung emoji hay ky tu xuong dong bi loi
+                tvResult.setText("Ket luan: " + ketLuan + "\nChi tiet: \n" + detailRoots);
                 
-                // Vẫn giữ tiến trình truyền tải dữ liệu API ngầm
                 postToApi(a, b, c, ketLuan, nghiem);
 
             } catch (Exception e) {
-                tvResult.setText("❌ Lỗi: Vui lòng nhập đầy đủ hệ số hợp lệ!");
+                tvResult.setText("Loi: Vui long nhap day du he so!");
             }
         });
     }
@@ -528,7 +549,7 @@ x2 = " + x2;
 
                 JSONObject input = new JSONObject();
                 input.put("a", a); input.put("b", b); input.put("c", c);
-                input.put("name", "hello tắc kè");
+                input.put("name", "hello tac ke");
                 root.put("input", input);
 
                 JSONObject output = new JSONObject();
@@ -548,10 +569,11 @@ x2 = " + x2;
                     while ((line = br.readLine()) != null) response.append(line);
                     br.close();
                     Log.d("API_SUCCESS", response.toString());
+                    runOnUiThread(() -> Toast.makeText(this, "API Success!", Toast.LENGTH_SHORT).show());
                 }
                 conn.disconnect();
             } catch (Exception e) {
-                Log.e("API_ERROR", "Lỗi mạng: ", e);
+                Log.e("API_ERROR", "Network error: ", e);
             }
         });
     }
