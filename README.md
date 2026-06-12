@@ -689,7 +689,7 @@ public class MathActivity extends AppCompatActivity {
 }
 ```
 
-## 6. Layout & Code Java Màn hình 3 (WebView)
+## 6. Layout Màn hình 3 (WebView)
 
 app/src/main/res/layout/activity_web.xml
 ```
@@ -732,14 +732,16 @@ app/src/main/res/layout/activity_web.xml
         android:layout_margin="16dp"/>
 </LinearLayout>
 ```
+## 7. Code Java Màn hình 3
 
 app/src/main/java/com.example.app2/WebActivity.java
 
 ```
-package com.example.app2; // Đã đổi chuẩn
+package com.example.app2;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.Button;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -754,6 +756,14 @@ public class WebActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
+        // ĐOẠN NÀY LÀ KHỞI TẠO NÚT QUAY LẠI ÔNG BỊ SÓT NHÉ
+        Button btnBackWeb = findViewById(R.id.btnBackWeb);
+        btnBackWeb.setOnClickListener(v -> finish());
+
         WebView webView = findViewById(R.id.myWebView);
         
         // Bật JS và ép trang web mở ngay trong lòng app thay vì văng ra Chrome
@@ -767,7 +777,8 @@ public class WebActivity extends AppCompatActivity {
     }
 }
 ```
-## 7. Test trên điện thoại
+
+## 8. Test trên điện thoại
 
 ### a) Screen 1
 
