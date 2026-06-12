@@ -3,7 +3,79 @@
 # MÔN HỌC: LẬP TRÌNH TRÊN THIẾT BỊ DI ĐỘNG
 # BÀI TẬP 02
 # BÀI LÀM
-# I. APP 1: SỔ TAY CẤU HÌNH (DỮ LIỆU ASSETS OFFLINE)
+# I. LÝ THUYẾT
+## 1. AndroidManifest.xml
+Mô tả: Là tệp cấu hình quan trọng nhất của ứng dụng, chứa thông tin cần thiết về ứng dụng cho hệ điều hành Android (tên package, các thành phần Activity, Service, Receiver, Provider).
+
+Khai báo quyền (Permissions): Khai báo bằng thẻ <uses-permission> trước thẻ <application>.
+
+Ví dụ: <uses-permission android:name="android.permission.CAMERA" />.
+
+Mục đích: Thông báo cho hệ thống và người dùng biết ứng dụng cần truy cập tài nguyên nhạy cảm (Camera, vị trí, danh bạ...).
+
+## 2. Vòng đời (Lifecycle) và onCreate
+
+Vòng đời: Là chuỗi trạng thái mà một Activity trải qua (Created, Started, Resumed, Paused, Stopped, Destroyed).
+
+Hàm onCreate(): Là điểm bắt đầu, được gọi khi Activity lần đầu được tạo.
+
+Tại sao cần: Tại đây, ta thực hiện các công việc khởi tạo quan trọng như thiết lập giao diện (setContentView), khởi tạo biến, kết nối cơ sở dữ liệu. Nếu không có, ứng dụng không thể hiển thị giao diện hay chuẩn bị tài nguyên.
+
+## 3. Kiểm tra quyền (Runtime Permissions - Java)
+
+Code:
+
+Java
+if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE);
+}
+Ý nghĩa: Từ Android 6.0 trở lên, ứng dụng phải xin quyền ngay lúc chạy (runtime) thay vì chỉ khai báo trong Manifest, giúp bảo mật dữ liệu người dùng.
+
+## 4. Giao diện (Layout) và Tài nguyên (Resources)
+
+Tham chiếu tài nguyên: Thay vì hardcode (ví dụ: android:text="Hello"), ta lưu vào tệp strings.xml dưới dạng: <string name="hello_msg">Hello</string>.
+
+Cú pháp tham chiếu: @string/hello_msg.
+
+Ưu điểm: Dễ quản lý, thay đổi nội dung không cần sửa code, dễ dàng hỗ trợ đa ngôn ngữ (Localization).
+
+Hỗ trợ Auto: Hệ thống tự động chọn tài nguyên phù hợp dựa trên thư mục (vd: values-vn cho tiếng Việt, values-night cho Dark Mode). Điều này giúp app tự thích ứng với thiết bị mà không cần code logic phức tạp.
+
+Đối tượng chứa (ViewGroup): Sử dụng LinearLayout.
+
+Các thuộc tính android:orientation="vertical/horizontal" để sắp xếp con theo chiều dọc/ngang.
+
+android:gravity định vị vị trí các thành phần bên trong.
+
+## 5. Tương tác code và Giao diện
+Tránh hardcode: Sử dụng getString(R.string.hello_msg) trong Java để lấy chuỗi từ tệp resource. Hệ thống tự động chọn đúng ngôn ngữ/theme đã cấu hình.
+
+Xử lý sự kiện (Click Button):
+
+Layout cần: Gán id cho button (android:id="@+id/myBtn").
+
+Cách 1 (Anonymous Inner Class):
+
+Java
+Button btn = findViewById(R.id.myBtn);
+btn.setOnClickListener(new View.OnClickListener() {
+    @Override public void onClick(View v) { /* Code xử lý */ }
+});
+
+Cách 2 (Implements): Class Activity implements View.OnClickListener, sau đó định nghĩa onClick() và gọi btn.setOnClickListener(this).
+
+## 6. Thư mục Assets
+Cú pháp truy cập: Sử dụng AssetManager:
+
+Java
+
+InputStream is = getAssets().open("file_name.txt");
+
+Lợi ích: Lưu trữ tệp tĩnh (hình ảnh lớn, phông chữ, file cấu hình, db offline) giúp ứng dụng hoạt động bình thường ngay cả khi không có Internet.
+
+Ứng dụng: Thích hợp cho các app hướng dẫn, từ điển offline, hoặc game có sẵn dữ liệu nội dung cần tải nhanh.
+
+# II. APP 1: SỔ TAY CẤU HÌNH (DỮ LIỆU ASSETS OFFLINE)
 ## 1. Cấu hình Manifest & Default Activity
 
 app/src/main/AndroidManifest.xml
@@ -207,9 +279,9 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-## 6. Test Ứng dụng trên máy
+## 6. Test ứng dụng trên điện thoại
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/09471188-37f5-43b5-b9f0-b3ca267622f8" />
+<img width="1260" height="2800" alt="1781277059183_182607293721674533_7657304349673072617_f1d5488f5ed1ff316bdf420d6c800b4f" src="https://github.com/user-attachments/assets/11b159ce-46be-48aa-9e8a-8d4ac68648a6" />
 
 # III. APP 2: KIẾN TRÚC 3 ACTIVITIES & TƯƠNG TÁC HTTP API
 ## 1. Cấp Quyền Internet & Khai báo Activity
@@ -697,7 +769,29 @@ public class WebActivity extends AppCompatActivity {
 ```
 ## 7. Test trên điện thoại
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/b1f7d27f-fa5f-4651-a27e-12e30a4ae8f3" />
+### a) Screen 1
+
+<img width="1260" height="2800" alt="1781277470377_182607293721674533_7657304349673072617_23443f776a4cde355a843b2d39bcd2e0" src="https://github.com/user-attachments/assets/d5123b05-22e4-4082-87bd-6f1560495b7b" />
+
+### b) Screen 2
+
+Test xem tính toán đã ổn định chưa:
+
+<img width="1260" height="2800" alt="1781277470461_182607293721674533_7657304349673072617_11cd77d9af31ef5f971f7a9164c69630" src="https://github.com/user-attachments/assets/246f7e08-f2f9-48e4-898f-ce7a4837d7e5" />
+
+Truy cập https://k58kmt.tdh.io.vn/ xem đã gửi nội dung tính toán lên chưa:
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/2be5e3e7-4ec0-4d2f-bc11-4d06c2ef4953" />
+
+### c) Screen 3
+
+Test xem đã truy cập được https://k58kmt.tdh.io.vn/?masv= hay chưa:
+
+<img width="1260" height="2800" alt="1781277470547_182607293721674533_7657304349673072617_3d3a9ca112c7618872f5bcc7f5370a76" src="https://github.com/user-attachments/assets/23ff3e30-354d-46fb-831a-719b317bcd4f" />
+
+Truy cập https://k58kmt.tdh.io.vn/ xem đã tương tác được hay chưa: 
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/5a2ff84e-37a0-4f51-aad8-6c342cfe2389" />
+
+
 
 
 
