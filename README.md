@@ -101,6 +101,9 @@ app/src/main/res/layout/item_command.xml
 ```
 
 ## 4. Giao diện Màn hình chính
+
+app/src/main/res/layout/activity_main.xml
+
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
