@@ -257,43 +257,51 @@ app/src/main/res/layout/activity_main.xml
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:padding="24dp"
-    android:background="#F5F5F5">
+    android:fitsSystemWindows="true" 
+    android:background="#F0F4F8">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="THÔNG TIN SINH VIÊN"
-        android:textSize="20sp"
+        android:text="🎓 THÔNG TIN SINH VIÊN"
+        android:textSize="22sp"
         android:textStyle="bold"
-        android:textColor="#333333"
+        android:textColor="#1A202C"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="32dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#FFFFFF"
-        android:padding="16dp"
+        android:background="@android:color/white"
+        android:padding="24dp"
+        android:elevation="4dp" 
         android:layout_marginBottom="40dp">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sinh viên: Lương Hoàng Việt" android:textSize="16sp" android:textColor="#000000" android:layout_marginBottom="8dp"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mã SV: K225480106073" android:textSize="16sp" android:textColor="#000000" android:layout_marginBottom="8dp"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Chuyên ngành: KTPM" android:textSize="16sp" android:textColor="#000000"/>
+        
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="👤 Sinh viên: Lương Hoàng Việt" android:textSize="17sp" android:textStyle="bold" android:textColor="#2D3748" android:layout_marginBottom="12dp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🆔 Mã SV: K225480106073" android:textSize="16sp" android:textColor="#4A5568" android:layout_marginBottom="12dp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="💻 Chuyên ngành: KTPM" android:textSize="16sp" android:textColor="#4A5568"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/btnGoMath"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:text="MÀN HÌNH GIẢI TOÁN"
-        android:backgroundTint="#1976D2"
+        android:layout_height="60dp"
+        android:text="📐 MÀN HÌNH GIẢI TOÁN"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:backgroundTint="#3182CE"
         android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/btnGoWeb"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:text="MÀN HÌNH WEBVIEW"
-        android:backgroundTint="#388E3C"/>
+        android:layout_height="60dp"
+        android:text="🌐 MÀN HÌNH WEBVIEW"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:backgroundTint="#38A169"/>
 </LinearLayout>
 ```
 
@@ -302,7 +310,7 @@ app/src/main/res/layout/activity_main.xml
 app/src/main/java/com.example.app2/MainActivity.java
 
 ```
-package com.example.app2; // Đã đổi chuẩn
+package com.example.app2;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -315,16 +323,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Ẩn thanh Action Bar mặc định
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         Button btnGoMath = findViewById(R.id.btnGoMath);
         Button btnGoWeb = findViewById(R.id.btnGoWeb);
 
-        btnGoMath.setOnClickListener(v -> {
-            startActivity(new Intent(this, MathActivity.class));
-        });
-
-        btnGoWeb.setOnClickListener(v -> {
-            startActivity(new Intent(this, WebActivity.class));
-        });
+        // Sử dụng Lambda expressions cho gọn
+        btnGoMath.setOnClickListener(v -> startActivity(new Intent(this, MathActivity.class)));
+        btnGoWeb.setOnClickListener(v -> startActivity(new Intent(this, WebActivity.class)));
     }
 }
 ```
@@ -338,49 +347,74 @@ app/src/main/res/layout/activity_math.xml
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:background="#FFFFFF">
+    android:padding="24dp"
+    android:fitsSystemWindows="true"
+    android:background="#F0F4F8">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PHƯƠNG TRÌNH BẬC 2"
-        android:textSize="18sp"
+        android:text="📐 PHƯƠNG TRÌNH BẬC 2"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:textColor="#1976D2"
-        android:layout_marginBottom="24dp"/>
+        android:textColor="#1A202C"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"/>
 
-    <EditText
-        android:id="@+id/edtA"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Nhập a"
-        android:inputType="numberSigned|numberDecimal"
-        android:layout_marginBottom="12dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:padding="20dp"
+        android:elevation="4dp"
+        android:layout_marginBottom="30dp">
 
-    <EditText
-        android:id="@+id/edtB"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Nhập b"
-        android:inputType="numberSigned|numberDecimal"
-        android:layout_marginBottom="12dp"/>
+        <EditText
+            android:id="@+id/edtA"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Nhập hệ số a"
+            android:inputType="numberSigned|numberDecimal"
+            android:layout_marginBottom="16dp"/>
 
-    <EditText
-        android:id="@+id/edtC"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Nhập c"
-        android:inputType="numberSigned|numberDecimal"
-        android:layout_marginBottom="24dp"/>
+        <EditText
+            android:id="@+id/edtB"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Nhập hệ số b"
+            android:inputType="numberSigned|numberDecimal"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/edtC"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Nhập hệ số c"
+            android:inputType="numberSigned|numberDecimal"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnSolve"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:text="GIẢI &amp; ĐẨY LÊN API"
-        android:backgroundTint="#FF9800"/>
+        android:layout_height="60dp"
+        android:text="🚀 GIẢI &amp; ĐẨY LÊN API"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:backgroundTint="#DD6B20"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Nút Quay Lại -->
+    <Button
+        android:id="@+id/btnBackMath"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="⬅️ QUAY LẠI TRANG CHÍNH"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#4A5568"
+        android:backgroundTint="#E2E8F0"/>
 </LinearLayout>
 ```
 ## 5. Code Java Màn hình 2 (Toán & API POST)
@@ -388,12 +422,13 @@ app/src/main/res/layout/activity_math.xml
 app/src/main/java/com.example.app2/MathActivity.java
 
 ```
-package com.example.app2; // Đã đổi chuẩn
+package com.example.app2;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONObject;
@@ -407,16 +442,25 @@ import java.util.concurrent.Executors;
 
 public class MathActivity extends AppCompatActivity {
     private final String STUDENT_CODE = "K225480106073";
+    private TextView tvResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_math);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         EditText edtA = findViewById(R.id.edtA);
         EditText edtB = findViewById(R.id.edtB);
         EditText edtC = findViewById(R.id.edtC);
         Button btnSolve = findViewById(R.id.btnSolve);
+        Button btnBackMath = findViewById(R.id.btnBackMath);
+        tvResult = findViewById(R.id.tvResult);
+
+        btnBackMath.setOnClickListener(v -> finish());
 
         btnSolve.setOnClickListener(v -> {
             try {
@@ -425,28 +469,47 @@ public class MathActivity extends AppCompatActivity {
                 double c = Double.parseDouble(edtC.getText().toString());
 
                 String ketLuan;
+                String detailRoots = "";
                 double nghiem = 0.0;
 
                 if (a == 0) {
-                    ketLuan = (b == 0) ? ((c == 0) ? "Vô số nghiệm" : "Vô nghiệm") : "1 nghiệm";
-                    if(b != 0) nghiem = -c / b;
+                    if (b == 0) {
+                        ketLuan = (c == 0) ? "Vô số nghiệm" : "Vô nghiệm";
+                        detailRoots = (c == 0) ? "Phương trình thỏa mãn với mọi x" : "Phương trình không có nghiệm";
+                    } else {
+                        ketLuan = "1 nghiệm";
+                        nghiem = -c / b;
+                        detailRoots = "Nghiệm bậc nhất x = " + nghiem;
+                    }
                 } else {
                     double delta = (b * b) - (4 * a * c);
-                    if (delta < 0) ketLuan = "Vô nghiệm";
-                    else if (delta == 0) {
+                    if (delta < 0) {
+                        ketLuan = "Vô nghiệm";
+                        detailRoots = "Vô nghiệm thực (Δ < 0)";
+                    } else if (delta == 0) {
                         ketLuan = "Nghiệm kép";
                         nghiem = -b / (2 * a);
+                        detailRoots = "x1 = x2 = " + nghiem;
                     } else {
                         ketLuan = "2 nghiệm PB";
-                        nghiem = (-b + Math.sqrt(delta)) / (2 * a);
+                        double x1 = (-b + Math.sqrt(delta)) / (2 * a);
+                        double x2 = (-b - Math.sqrt(delta)) / (2 * a);
+                        nghiem = x1; 
+                        detailRoots = "x1 = " + x1 + "
+x2 = " + x2;
                     }
                 }
 
-                Toast.makeText(this, "Kết luận: " + ketLuan, Toast.LENGTH_SHORT).show();
+                // Xuất trực tiếp lên giao diện thay vì gọi Toast
+                tvResult.setText("📌 Kết luận: " + ketLuan + "
+📋 Chi tiết:
+" + detailRoots);
+                
+                // Vẫn giữ tiến trình truyền tải dữ liệu API ngầm
                 postToApi(a, b, c, ketLuan, nghiem);
 
             } catch (Exception e) {
-                Toast.makeText(this, "Lỗi nhập liệu!", Toast.LENGTH_SHORT).show();
+                tvResult.setText("❌ Lỗi: Vui lòng nhập đầy đủ hệ số hợp lệ!");
             }
         });
     }
@@ -484,9 +547,7 @@ public class MathActivity extends AppCompatActivity {
                     String line;
                     while ((line = br.readLine()) != null) response.append(line);
                     br.close();
-                    
                     Log.d("API_SUCCESS", response.toString());
-                    runOnUiThread(() -> Toast.makeText(this, "Đẩy API Thành công!", Toast.LENGTH_SHORT).show());
                 }
                 conn.disconnect();
             } catch (Exception e) {
@@ -505,12 +566,39 @@ app/src/main/res/layout/activity_web.xml
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="#F0F4F8">
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🌐 TRÌNH DUYỆT WEBVIEW"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#1A202C"
+        android:padding="16dp"
+        android:background="@android:color/white"
+        android:elevation="4dp"/>
 
     <WebView
         android:id="@+id/myWebView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+        
+    <!-- Nút Quay Lại -->
+    <Button
+        android:id="@+id/btnBackWeb"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="⬅️ QUAY LẠI TRANG CHÍNH"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#4A5568"
+        android:backgroundTint="#E2E8F0"
+        android:layout_margin="16dp"/>
 </LinearLayout>
 ```
 
@@ -548,7 +636,7 @@ public class WebActivity extends AppCompatActivity {
     }
 }
 ```
-
+## 7. Test trên máy ảo
 
 
 
